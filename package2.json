@@ -1,0 +1,11 @@
+{
+  "name": "moje-skoly-app",
+  "version": "1.0.0",
+  "description": "Mojeskoly.cz is web app for comparing and choosing the optimal school for your child.",
+  "main": "index.js",
+  "author": "Marek Lisy",
+  "license": "MIT",
+  "dependencies": {
+    "react-hot-loader": "^3.0.0-beta.7"
+  }
+}
