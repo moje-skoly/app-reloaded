@@ -1,0 +1,37 @@
+@import (less) '../../theme/less/buttons.less';
+
+.searchBox {
+  &:before {
+    content: " ";
+    display: block;
+    width: 120%;
+    height: 140%;
+    position: absolute;
+    left: -10%;
+    top: -20%;
+
+    border-radius: 2px;
+    background: url("../../theme/images/box.png") no-repeat;
+    background-size: cover;
+  }
+
+  position: relative;
+  padding: 10px 20px 20px;
+  margin-bottom: 40px;
+
+  label {
+    margin-top: 10px;
+    font-size: 16pt;
+    display: block;
+  }
+
+  input {
+    border-radius: 2px;
+  }
+}
+
+
+.searchBtn {
+  .pink();
+  text-transform: uppercase;
+}

@@ -1,0 +1,54 @@
+@import (less) '../../theme/less/colors.less';
+
+.homepageSection {
+  padding: 40px 0;
+  text-align: center;
+}
+
+.item {
+  margin: 30px 0;
+
+}
+
+.imgWrapper {
+  height: 100px;
+}
+
+.white {
+  background: @white;
+
+  h3 {
+    color: @greenText;
+  }
+}
+
+.gray {
+  background: @grayBg;
+
+  .grayBubble {
+    margin-top: 40px;
+    position: relative;
+    border-radius: 2px;
+
+    &:before {
+      content: " ";
+      display: block;
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 15px solid @darkerGrayBg;
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      margin-left: -15px;
+    }
+
+    padding: 15px;
+    background: @darkerGrayBg;
+
+    h3 {
+      margin-top: 10px;
+    }
+  }
+}

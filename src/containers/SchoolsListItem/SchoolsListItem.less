@@ -1,0 +1,73 @@
+
+@import (less) '../../theme/less/colors.less';
+
+.item() {
+    background: @white;
+    border: 1px solid @darkerGrayBg;
+    border-radius: 1px;
+    padding: 20px 50px 20px 25px;
+    position: relative;
+    margin-top: 25px;
+    width: 100%;
+    text-align: left;
+
+    h2 {
+      font-size: 14pt;
+      margin: 0 0 15px 0;
+      font-weight: semibold;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &.focus {
+      transition: all 0.3s;
+      outline: none;
+    }
+
+    &:before {
+      content: " ";
+      border: none;
+      border-left: 1px solid @darkerGrayBg;
+      background: @grayBg url('./containers/SchoolsListItem/arrow-right.svg') no-repeat center center;
+      height: 100%;
+      width: 30px;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .table {
+      td {
+        img {
+          margin-right: 15px;
+        }
+
+        a {
+          color: @greenText;
+        }
+      }
+    }
+}
+
+.unselectedItem {
+  .item();
+  border-color: transparent;
+  background: transparent;
+
+  &:before {
+    border-color: transparent;
+  }
+}
+
+.selectedItem {
+  .item();
+  font-weight: bold;
+}
+
+.distance {
+  color: @pink;
+  font-weight: bold;
+  line-height: 14pt;
+}

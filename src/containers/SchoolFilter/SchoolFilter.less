@@ -1,0 +1,62 @@
+@import (less) '../../theme/less/colors.less';
+@import (less) '../../theme/less/buttons.less';
+
+.countTag {
+  padding: 5px;
+  margin-right: 10px;
+  height: 31px;
+  text-align: center;
+  display: inline-block;
+  background: @pink;
+  color: @white;
+  border: 1px solid #A50000;
+  font-weight: 300;
+  border-radius: 2px;
+}
+
+.toggleSettings {
+  background: @grayBg;
+  border: 1px solid @darkGray;
+  border-radius: 2px;
+  text-align: left;
+
+  padding: 5px 42px 5px 12px;
+  position: relative;
+  height: 31px;
+
+  .arrow {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 100%;
+    border-left: 1px solid @darkGray;
+    text-align: center;
+    line-height: 31px;
+    font-size: 18px;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    background: @darkerGrayBg;
+  }
+}
+
+
+
+.advancedFiltering {
+  padding: 25px;
+  background: @white;
+  border: 1px solid @darkerGrayBg;
+  border-radius: 2px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.filterBtn {
+  .pink();
+}

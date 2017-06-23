@@ -1,0 +1,80 @@
+@import (less) './colors.less';
+
+.button() {
+  padding: 4px 10px;
+  cursor: pointer;
+  border: 1px solid;
+  text-transform: uppercase;
+
+  &:disabled {
+    &:hover,
+    &:focus,
+    &:active {
+      cursor: not-allowed;
+    }
+  }
+
+  &:not(:disabled) {
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+}
+
+.pink() {
+  .button();
+
+  background: @pink;
+  color: @white;
+  border-color: @pink;
+
+  &:disabled {
+    color: @white;
+    background: darken(@pink, 20%);
+  }
+
+  &:not(:disabled) {
+    &:hover {
+      color: @white;
+      background: darken(@pink, 10%);
+    }
+
+    &:focus {
+      color: @white;
+    }
+
+    &:active {
+      background: darken(@pink, 15%);
+    }
+  }
+}
+
+.green() {
+  .button();
+
+  background: @greenText;
+  color: @white;
+  border-color: @greenText;
+
+  &:not(:disabled) {
+    &:hover {
+      color: @white;
+      background: darken(@greenText, 10%);
+    }
+
+    &:focus {
+      color: @white;
+    }
+
+    &:active {
+      background: darken(@greenText, 15%);
+    }
+  }
+}
+
+.gray() {
+  .button();
+  color: @black;
+  background: @grayBg;
+}

@@ -1,0 +1,183 @@
+@import (less) "./colors.less";
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Hind", sans-serif;
+  font-weight: 300;
+  font-size: 12pt;
+}
+
+* {
+  font-weight: normal;
+}
+
+strong {
+  font-weight: semibold;
+}
+
+.appContent {
+  background: @grayBg;
+  padding-bottom: 20px;
+  min-height: 400px;
+
+  .container {
+    max-width: 940px;
+  }
+
+  /**
+   * Layout
+   */
+
+  h1, h2, h3, h4, h5 {
+    font-weight: 300;
+    color: @black;
+
+    &.underlinedTitle {
+      padding: 15px 30px 5px;
+      border-bottom: 1px solid @black;
+      display: inline-block;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+  }
+
+}
+
+@media (max-width: 500px) {
+  .menuRight {
+    width: 100%;
+  }
+
+  .menuBottom {
+    margin-top: 25px;
+  }
+}
+
+.menuRight {
+  text-align: right;
+}
+
+.alert {
+  border-radius: 0;
+}
+
+header#top {
+  background: @white;
+  height: 80px;
+  border-bottom: 1px solid @black;
+
+
+  h1 {
+    display: inline-block;
+    line-height: 50px;
+    height: 60px;
+    margin: 10px 0;
+
+    a {
+      color: @greenText;
+      font-weight: 300;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  img {
+    height: 60px;
+  }
+
+  a.pull-right {
+    line-height: 80px;
+    text-decoration: none;
+    color: @black;
+  }
+}
+
+.homepage {
+  text-align: center;
+  padding: 50px 0 80px;
+  background: @grayBg;
+
+  h1 {
+    font-size: 40pt;
+    font-weight: 300;
+
+    strong {
+      color: @pink;
+    }
+  }
+
+  p.subtitle {
+    color: @black;
+    font-size: 18pt;
+    font-weight: 300;
+  }
+}
+
+
+#search-box {
+  &:before {
+    content: " ";
+    display: block;
+    width: 120%;
+    height: 140%;
+    position: absolute;
+    left: -10%;
+    top: -20%;
+
+    border-radius: 2px;
+    //background: url("../images/box.png") no-repeat;
+    background-size: cover;
+  }
+
+  position: relative;
+  padding: 10px 20px 20px;
+  margin-bottom: 40px;
+
+  label {
+    margin-top: 10px;
+    font-size: 16pt;
+  }
+
+  input {
+    border-radius: 2px;
+  }
+}
+
+.white {
+  background: @white;
+}
+
+.gray {
+  background: @grayBg;
+}
+
+
+
+footer#bottom {
+  padding: 30px 0 40px;
+
+  ul {
+    li {
+      display: inline-block;
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+
+      a {
+        color: @black;
+      }
+
+      &:not(:first-child):before {
+        content: "|";
+        margin-right: 10px;
+      }
+    }
+  }
+}

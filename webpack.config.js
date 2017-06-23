@@ -65,6 +65,10 @@ module.exports = {
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         use: 'file-loader?name=dist/fonts/[name].[ext]'
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: 'file-loader?name=img/img-[hash:6].[ext]'
       }
     ]
   },

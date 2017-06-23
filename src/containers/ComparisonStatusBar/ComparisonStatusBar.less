@@ -1,0 +1,22 @@
+@import (less) '../../theme/less/buttons.less';
+
+
+.bar() {
+  position: fixed;
+  bottom: 0;
+  right: 10%;
+  height: 30px;
+  border-bottom: 0;
+  z-index: 1500;
+}
+
+.ready {
+  .bar();
+  .green();
+}
+
+.empty {
+  .bar();
+  .gray();
+  cursor: not-allowed;
+}

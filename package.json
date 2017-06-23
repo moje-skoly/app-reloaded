@@ -24,15 +24,16 @@
     "edit",
     "webpack"
   ],
-  "author": "Dan Abramov <dan.abramov@me.com> (http://github.com/gaearon)",
+  "author": "Marek Lisy <marek.lisy.hk@gmail.com> (http://github.com/maral)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gaearon/react-hot-boilerplate/issues"
+    "url": "https://github.com/moje-skoly/app-reloaded/issues"
   },
-  "homepage": "https://github.com/gaearon/react-hot-boilerplate",
+  "homepage": "https://github.com/moje-skoly/app-reloaded",
   "devDependencies": {
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "babel-preset-stage-2": "^6.22.0",
@@ -45,13 +46,22 @@
   },
   "dependencies": {
     "babel-eslint": "^7.1.1",
+    "bootstrap": "4.0.0-alpha.4",
     "css-loader": "^0.28.4",
     "eslint": "^3.14.1",
     "eslint-plugin-react": "^6.9.0",
+    "file-loader": "^0.11.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.0",
+    "react-addons-transition-group": "^15.6.0",
+    "react-bootstrap": "^0.31.0",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "react-router-dom": "^4.1.1",
+    "reactstrap": "^4.6.2",
+    "redux": "^3.7.0",
     "style-loader": "^0.18.2"
   }
 }
