@@ -1,7 +1,8 @@
 // require('babel-polyfill');
 
 const title = 'Moje školy';
-const description = 'Moje školy je otevřená databáze mateřských, základních a středních škol na území České republiky.';
+const description =
+  'Moje školy je otevřená databáze mateřských, základních a středních škol na území České republiky.';
 
 module.exports = {
   isProduction: (process.env.NODE_ENV || 'production') === 'production',
@@ -14,7 +15,7 @@ module.exports = {
     description: description,
     meta: {
       charSet: 'utf-8',
-      property: {
+      properties: {
         'og:site_name': title,
         'og:image': 'theme/images/favicon.png',
         'og:locale': 'cs_CZ',

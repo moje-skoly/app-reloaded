@@ -1,17 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { Container, Row, Col } from 'reactstrap';
-import DocumentMeta from 'react-document-meta';
-import config from '../../config';
-import ComparisonStatusBar
-  from '../containers/ComparisonStatusBar/ComparisonStatusBar';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { DocumentMeta } from '../../components';
+import { ComparisonStatusBar } from '../../containers';
 
 import './Layout.less';
 
-@connect(state => ({
-  comparisonCount: state.comparison.schools.length
-}))
+const Menu = props => {
+  return (
+    <ul className={props.className}>
+      <li><Link to="/manifest">manifest</Link></li>
+      <li><Link to="/o-projektu">o projektu</Link></li>
+      <li><Link to="/kontakt">kontakt</Link></li>
+    </ul>
+  );
+};
+
+@connect(state => ({ comparisonCount: state.comparison.schools.length }))
 export default class App extends Component {
   static propTypes = {
     comparisonCount: PropTypes.number.isRequired,
@@ -22,25 +28,15 @@ export default class App extends Component {
     store: PropTypes.object.isRequired
   };
 
-  menu(menuClass) {
-    return (
-      <ul className={menuClass}>
-        <li><a href="/manifest">manifest</a></li>
-        <li><a href="/o-projektu">o projektu</a></li>
-        <li><a href="/kontakt">kontakt</a></li>
-      </ul>
-    );
-  }
-
   render() {
     const logoImg = require('../../theme/images/logo.png');
     const nadaceVodafoneImg = require('../../theme/images/vodafone_cs.png');
     const motejlImg = require('../../theme/images/fom.png');
     return (
       <div>
-        <DocumentMeta {...config.app} />
+        <DocumentMeta />
         <header id="top" className="top">
-          <Container>
+          <Grid>
             <Row>
               <Col xs={3}>
                 <h1>
@@ -50,10 +46,10 @@ export default class App extends Component {
                 </h1>
               </Col>
               <Col xs={9} className="menuRight">
-                {this.menu('')}
+                <Menu />
               </Col>
             </Row>
-          </Container>
+          </Grid>
         </header>
 
         <div className="appContent">
@@ -62,7 +58,7 @@ export default class App extends Component {
         </div>
 
         <footer className="bottom">
-          <Container>
+          <Grid>
             <Row>
               <Col md={4} mdOffset={4} xs={12} className="sponsors">
                 <a href="http://nadacevodafone.cz/">
@@ -73,10 +69,10 @@ export default class App extends Component {
                 </a>
               </Col>
               <Col md={4} xs={12} className="menuBottom">
-                {this.menu('pull-right')}
+                <Menu className="pull-right" />
               </Col>
             </Row>
-          </Container>
+          </Grid>
         </footer>
       </div>
     );

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Alert } from 'reactstrap';
+import { Grid, Row, Col, Alert } from 'react-bootstrap';
 
 export default class BetaAlert extends Component {
   render() {
     return (
-      <Container>
+      <Grid>
         <Row>
           <Col xs={12}>
-            <Alert color="warning">
+            <Alert bsStyle="warning">
               Aplikaci jsme právě spustili. Budeme proto rádi za hlášení všech nedostatků na adresu
               {' '}
               <a href="mailto:marek.lisy@vcelka.cz">marek.lisy@vcelka.cz</a>
@@ -15,7 +15,7 @@ export default class BetaAlert extends Component {
             </Alert>
           </Col>
         </Row>
-      </Container>
+      </Grid>
     );
   }
 }

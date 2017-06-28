@@ -1,4 +1,9 @@
-export ComparisonButton from './ComparisonButton/ComparisonButton';
-export HowItWorks from './HowItWorks/HowItWorks';
-export SchoolDetail from './SchoolDetail/SchoolDetail';
-export SchoolsMap from './SchoolsMap/SchoolsMap';
+export { default as DocumentMeta } from './DocumentMeta';
+export {
+  default as ComparisonButton
+} from './ComparisonButton/ComparisonButton';
+export { default as HowItWorks } from './HowItWorks/HowItWorks';
+
+// export { default as SchoolDetail } from './SchoolDetail/SchoolDetail';
+
+// export { default as SchoolsMap } from './SchoolsMap/SchoolsMap';

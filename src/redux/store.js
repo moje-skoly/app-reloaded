@@ -1,6 +1,10 @@
-import { createStore } from 'redux';
-import filter from './modules/filter';
+import { createStore, combineReducers } from 'redux';
+import reducer from './modules/reducer';
 
 const initialState = {};
 
-export default createStore(filter, initialState);
+export default createStore(
+  reducer,
+  initialState,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);

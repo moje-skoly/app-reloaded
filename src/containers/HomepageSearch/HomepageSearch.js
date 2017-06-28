@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-// import { pushState } from 'redux-router';
+import { push } from 'react-router-redux';
 import { load as filter } from '../../redux/modules/filter';
 
 import './HomepageSearch.less';
 
 @connect(state => ({}))
-export default class HomepageSearch extends Component {
+export default class HomepageSarch extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired
   };
@@ -36,26 +36,17 @@ export default class HomepageSearch extends Component {
     const { dispatch } = this.props;
     const { loc, type, canSearch } = this.state;
     if (canSearch) {
+      // @todo move this to the resulting component
       dispatch(filter(loc, type));
-
-      // dispatch(
-
-      //   pushState(
-
-      //     null,
-
-      //     `/filter/${encodeURIComponent(loc)}/${encodeURIComponent(type)}`
-
-      //   )
-
-      // );
+      dispatch(
+        push(`/filter/${encodeURIComponent(loc)}/${encodeURIComponent(type)}`)
+      );
     }
   };
-
   render() {
     const { loc, type, canSearch } = this.state;
     return (
-      <Container>
+      <Grid>
         <div className="searchBox">
           <form className="form form-horizontal">
             <Row>
@@ -97,7 +88,7 @@ export default class HomepageSearch extends Component {
             </Row>
           </form>
         </div>
-      </Container>
+      </Grid>
     );
   }
 }

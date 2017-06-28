@@ -15,7 +15,6 @@ const Home = () => (
         je databáze mateřských, základních a středních škol na území České republiky sestavená z otevřených dat veřejných institucí.
       </p>
     </div>
-    <BetaAlert />
     <br />
     <HomepageSearch />
     <HowItWorks />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import './HowItWorks.less';
 
@@ -9,7 +9,7 @@ export default class HowItWorks extends Component {
       <div className="howItWorks">
         <div className="white">
           <div className="homepageSection">
-            <Container>
+            <Grid>
               <Row>
                 <Col xs={12}>
                   <h2>Jak to funguje</h2>
@@ -67,12 +67,12 @@ export default class HowItWorks extends Component {
                   </div>
                 </Col>
               </Row>
-            </Container>
+            </Grid>
           </div>
         </div>
         <div className="gray">
           <div className="homepageSection">
-            <Container>
+            <Grid>
               <Row>
                 <Col sm={4}>
                   <div className="item">
@@ -125,7 +125,7 @@ export default class HowItWorks extends Component {
                   </div>
                 </Col>
               </Row>
-            </Container>
+            </Grid>
           </div>
         </div>
       </div>
