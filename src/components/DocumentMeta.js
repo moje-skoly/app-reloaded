@@ -7,9 +7,9 @@ export default () => {
   return (
     <Helmet>
       <meta charSet={meta.charSet} />
-      {Object.keys(meta.properties).map((key, i) => {
-        <meta key={i} property={key} content={meta.properties[key]} />;
-      })}
+      {Object.keys(meta.properties).map((key, i) => (
+        <meta key={i} property={key} content={meta.properties[key]} />
+      ))}
     </Helmet>
   );
 };

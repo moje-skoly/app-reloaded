@@ -1,29 +1,34 @@
 import React, { Component, PropTypes } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { select as selectPreview, unselect as unselectPreview } from '../../redux/modules/preview';
-import Sticky from 'react-sticky-position';
+
+import { search } from '../../redux/modules/filter';
+import {
+  select as selectPreview,
+  unselect as unselectPreview
+} from '../../redux/modules/preview';
+// import Sticky from 'react-sticky-position';
 
 import SchoolFilter from '../../containers/SchoolFilter/SchoolFilter';
 import SchoolsList from '../../containers/SchoolsList/SchoolsList';
 import SchoolsMap from '../../components/SchoolsMap/SchoolsMap';
-import SuggestedAddresses from '../../containers/SuggestedAddresses/SuggestedAddresses';
-import styles from './Filter.less';
+import SuggestedAddresses
+  from '../../containers/SuggestedAddresses/SuggestedAddresses';
+import './Filter.less';
 
 @connect(
   (state, props) => ({
     schools: state.filter.schools,
     addresses: state.filter.addresses || [],
-    center: state.filter.center,
-    previewedSchoolId: state.router.params.previewId,
+    center: state.filter.center
   }),
-  (dispatch) => ({
+  dispatch => ({
     select: selectPreview(dispatch),
-    unselect: unselectPreview(dispatch)
+    unselect: unselectPreview(dispatch),
+    filter: (address, schoolType) => dispatch(search(address, schoolType))
   })
 )
 export default class Filter extends Component {
-
   static propTypes = {
     center: PropTypes.object,
     children: PropTypes.object,
@@ -40,11 +45,12 @@ export default class Filter extends Component {
     }).isRequired
   };
 
-  componentDidMount = () => {
-
+  componentWillMount = () => {
+    const { params: { address, schoolType } } = this.props;
+    this.props.filter(address, schoolType);
   };
 
-  selectSchool = (school) => {
+  selectSchool = school => {
     const { previewedSchoolId, select, unselect, params } = this.props;
     const { address, schoolType } = params;
     if (school._id === previewedSchoolId) {
@@ -56,11 +62,13 @@ export default class Filter extends Component {
 
   render() {
     const { schools, children, center, params, addresses } = this.props;
-    const { schoolType } = params;
+    const { address, schoolType } = params;
     const filteredAddresses = addresses.filter((addr, index) => index !== 0);
-    const address = addresses[0];
+    //const address = addresses[0];
     const unitsOnMap = schools.map(school => {
-      const unitOfType = school.units.find(unit => unit.unitType === schoolType);
+      const unitOfType = school.units.find(
+        unit => unit.unitType === schoolType
+      );
       if (!!unitOfType && !!unitOfType.metadata.address.location) {
         // change the location of the school to the location of the unit
         school.metadata.address.location = unitOfType.metadata.address.location;
@@ -70,23 +78,32 @@ export default class Filter extends Component {
     });
 
     return (
-      <div className={styles.homepage}>
+      <div className="homepage">
         <Grid>
           <Row>
             <Col sm={6}>
-              <h1 className={styles.underlinedTitle}>{'Nejbližší školy'}</h1>
-              <p className={styles.radiusParagraph}>od místa {address}</p>
+              <h1 className="underlinedTitle">{'Nejbližší školy'}</h1>
+              <p className="radiusParagraph">od místa {address}</p>
               <SchoolFilter address={address} schoolType={schoolType} />
-              <SuggestedAddresses currentAddress={address} addresses={filteredAddresses} type={schoolType} />
+              <SuggestedAddresses
+                currentAddress={address}
+                addresses={filteredAddresses}
+                type={schoolType}
+              />
               <SchoolsList schools={schools} select={this.selectSchool} />
             </Col>
             <Col sm={6}>
-              <div className={styles.map}>
-                <SchoolsMap schools={unitsOnMap} select={this.selectSchool} center={center} centerTitle={address} />
+              <div className="map">
+                <SchoolsMap
+                  schools={unitsOnMap}
+                  select={this.selectSchool}
+                  center={center}
+                  centerTitle={address}
+                />
               </div>
-              <Sticky computeWidth style={{ top: 20 }}>
+              {/*<Sticky computeWidth style={{ top: 20 }}>
                 {children}
-              </Sticky>
+              </Sticky>*/}
             </Col>
           </Row>
         </Grid>

@@ -1,13 +1,13 @@
 import React from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'reactstrap';
 
 import './About.less';
 
 const About = () => {
   return (
-    <Grid>
+    <Container>
       <Row>
-        <Col md={6} className="offset-md-3" sm={8} smOffset={2} xs={12}>
+        <Col md={{ size: 6, offset: 3 }} sm={{ size: 8, offset: 2 }} xs={12}>
           <div className="about">
             <h1>O projektu <strong>Moje školy</strong></h1>
             <h3>Jak vznikl?</h3>
@@ -77,7 +77,7 @@ const About = () => {
           </div>
         </Col>
       </Row>
-    </Grid>
+    </Container>
   );
 };
 

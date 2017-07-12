@@ -1,48 +1,86 @@
-const LOAD = 'nase-skoly/filter/LOAD';
-const LOAD_SUCCESS = 'nase-skoly/filter/LOAD_SUCCESS';
-const LOAD_FAIL = 'nase-skoly/filter/LOAD_FAIL';
+import { ajax } from 'rxjs/observable/dom/ajax';
+import { Observable } from 'rxjs';
+
+const SEARCH = 'moje-skoly/filter/SEARCH';
+const SEARCH_SUCCESS = 'moje-skoly/filter/SEARCH_SUCCESS';
+const SEARCH_FAILED = 'moje-skoly/filter/SEARCH_FAILED';
 
 const initialState = {
   loaded: false,
   schools: []
 };
 
-export default function filter(state = initialState, action = {}) {
+export default (state = initialState, action = {}) => {
   switch (action.type) {
-  case LOAD:
-    return {
-      ...state,
-      loading: true
-    };
-  case LOAD_SUCCESS:
-    return {
-      ...state,
-      loading: false,
-      loaded: true,
-      radius: action.result.radius,
-      center: action.result.location,
-      schools: action.result.schools,
-      addresses: action.result.addresses
-    };
-  case LOAD_FAIL:
-    return {
-      ...state,
-      loading: false,
-      loaded: false,
-      error: true
-    };
-  default:
-    return state;
+    case SEARCH:
+      return {
+        ...state,
+        loading: true
+      };
+
+    case SEARCH_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        radius: action.payload.radius,
+        center: action.payload.location,
+        schools: action.payload.schools,
+        addresses: action.payload.addresses
+      };
+
+    case SEARCH_FAILED:
+      return {
+        ...state,
+        loading: false,
+        loaded: false,
+        error: true
+      };
+
+    default:
+      return state;
   }
-}
+};
 
-export function isLoaded(globalState) {
+const filterEpic = action$ =>
+  action$
+    .ofType(SEARCH)
+    .mergeMap(action =>
+      ajax
+        .getJSON(
+          `/v1/search/${encodeURIComponent(action.payload.address)}/${encodeURIComponent(action.payload.schoolType)}`
+        )
+        .map(response => searchFailed(response))
+        .catch(error => Observable.of(searchFailed(error)))
+    );
+
+const isLoaded = globalState => {
   return globalState.filter && globalState.filter.loaded;
-}
+};
 
-export function load(address, schoolType) {
+const search = (address, schoolType) => {
   return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get(`/v1/search/${encodeURIComponent(address)}/${encodeURIComponent(schoolType)}`)
+    type: SEARCH,
+    payload: {
+      address,
+      schoolType
+    }
   };
-}
+};
+
+const searchCompleted = payload => {
+  return {
+    type: SEARCH_SUCCESS,
+    payload
+  };
+};
+
+const searchFailed = err => {
+  return {
+    type: SEARCH_FAILED,
+    payload: err,
+    error: true
+  };
+};
+
+export { filterEpic, isLoaded, search, searchCompleted, searchFailed };

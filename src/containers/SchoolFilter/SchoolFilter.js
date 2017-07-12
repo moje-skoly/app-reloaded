@@ -1,8 +1,8 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { pushState } from 'redux-router';
-import { load as filter } from '../../redux/modules/filter';
-import styles from './SchoolFilter.less';
+import { push } from 'react-router-redux';
+import { search } from '../../redux/modules/filter';
+import './SchoolFilter.less';
 
 @connect(
   state => ({
@@ -12,12 +12,15 @@ import styles from './SchoolFilter.less';
     schoolsCount: state.filter.schools.length
   }),
   dispatch => ({
-    load: (address, schoolType) => dispatch(filter(address, schoolType)),
-    changeUrl: (address, schoolType) => dispatch(pushState(null, `/filter/${encodeURIComponent(address)}/${encodeURIComponent(schoolType)}`))
+    search: (address, schoolType) =>
+      dispatch(
+        push(
+          `/filter/${encodeURIComponent(address)}/${encodeURIComponent(schoolType)}`
+        )
+      )
   })
 )
 export default class SchoolFilter extends Component {
-
   static propTypes = {
     loading: PropTypes.bool,
     loaded: PropTypes.bool,
@@ -25,8 +28,7 @@ export default class SchoolFilter extends Component {
     schoolsCount: PropTypes.number.isRequired,
     address: PropTypes.string.isRequired,
     schoolType: PropTypes.string.isRequired,
-    load: PropTypes.func.isRequired,
-    changeUrl: PropTypes.func.isRequired
+    search: PropTypes.func.isRequired
   };
 
   componentWillMount = () => {
@@ -38,18 +40,18 @@ export default class SchoolFilter extends Component {
     });
   };
 
-  componentDidMount = () => {
-    const { loading, loaded, error } = this.props;
-    if (error === false
-      && loaded === false
-      && loading === false) {
+  // componentDidMount = () => {
+  //   const { loading, loaded, error } = this.props;
+  //   if (error === false && loaded === false && loading === false) {
+  //     this.load();
+  //   }
+  // };
 
-      this.load();
-    }
-  };
-
-  componentWillReceiveProps = (props) => {
-    if (props.address !== this.state.address || props.schoolType !== this.state.schoolType) {
+  componentWillReceiveProps = props => {
+    if (
+      props.address !== this.state.address ||
+      props.schoolType !== this.state.schoolType
+    ) {
       this.setState({
         address: props.address,
         schoolType: props.schoolType
@@ -57,29 +59,19 @@ export default class SchoolFilter extends Component {
     }
   };
 
-  onClick = (event) => {
+  onClick = event => {
     event.preventDefault();
 
-    // initiate fetching data
-    this.load();
-
-    // also change the URL
-    const { changeUrl } = this.props;
+    const { search } = this.props;
     const { address, schoolType } = this.state;
-    changeUrl(address, schoolType);
-  }
+    search(address, schoolType);
+  };
 
-  getResultCountable = (resultCount) => {
+  getResultCountable = resultCount => {
     if (resultCount === 0 || resultCount > 4) {
       return 'nejbližších škol';
     }
     return resultCount > 1 ? 'nejbližší školy' : 'nejbližší škola';
-  };
-
-  load = () => {
-    const { load } = this.props;
-    const { address, schoolType } = this.state;
-    load(address, schoolType);
   };
 
   toggleFilter = () => {
@@ -87,8 +79,8 @@ export default class SchoolFilter extends Component {
     this.setState({ showFilter: !showFilter });
   };
 
-  changeAddress = (event) => this.setState({ address: event.target.value });
-  changeType = (event) => this.setState({ schoolType: event.target.value });
+  changeAddress = event => this.setState({ address: event.target.value });
+  changeType = event => this.setState({ schoolType: event.target.value });
 
   render() {
     const { showFilter, address, schoolType } = this.state;
@@ -97,27 +89,39 @@ export default class SchoolFilter extends Component {
     return (
       <div>
         <p className={'text-right'}>
-          <span className={styles.countTag}>
+          <span className="countTag">
             {schoolsCount} {this.getResultCountable(schoolsCount)}
           </span>
-          <button className={styles.toggleSettings} onClick={this.toggleFilter}>
+          <button className="toggleSettings" onClick={this.toggleFilter}>
             {'podrobné filtrování'}
-            <span className={styles.arrow}>
-              <i className={'fa fa-' + (showFilter ? 'angle-up' : 'angle-down')} />
+            <span className="arrow">
+              <i
+                className={'fa fa-' + (showFilter ? 'angle-up' : 'angle-down')}
+              />
             </span>
           </button>
         </p>
 
-        {showFilter && (
-          <form className={styles.advancedFiltering}>
+        {showFilter &&
+          <form className="advancedFiltering">
             <h3>Lokalita</h3>
             <p className={'form-group'}>
-              <input value={address} onChange={this.changeAddress} className={'form-control'} />
+              <input
+                value={address}
+                onChange={this.changeAddress}
+                className={'form-control'}
+              />
             </p>
 
             <h3>Typ školy</h3>
             <p className={'form-group'}>
-              <select id="type" name="school_type" className={'form-control'} value={schoolType} onChange={this.changeType}>
+              <select
+                id="type"
+                name="school_type"
+                className={'form-control'}
+                value={schoolType}
+                onChange={this.changeType}
+              >
                 <option value="materska_skola">Mateřská</option>
                 <option value="zakladni_skola">Základní</option>
                 <option value="stredni_skola">Střední</option>
@@ -125,14 +129,18 @@ export default class SchoolFilter extends Component {
             </p>
             <hr />
             <p className={'text-right'}>
-              <button disabled={loading} className={styles.filterBtn} onClick={this.onClick}>
-                {loading === true ? 'Probíhá vyhledávání...' : 'Změnit kritéria'}
+              <button
+                disabled={loading}
+                className="filterBtn"
+                onClick={this.onClick}
+              >
+                {loading === true
+                  ? 'Probíhá vyhledávání...'
+                  : 'Změnit kritéria'}
               </button>
             </p>
-          </form>
-        )}
+          </form>}
       </div>
     );
   }
-
 }

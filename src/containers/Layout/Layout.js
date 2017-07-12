@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'reactstrap';
 import { DocumentMeta } from '../../components';
 import { ComparisonStatusBar } from '../../containers';
 
@@ -11,7 +11,7 @@ const Menu = props => {
   return (
     <ul className={props.className}>
       <li><Link to="/manifest">manifest</Link></li>
-      <li><Link to="/o-projektu">o projektu</Link></li>
+      <li><Link to="/o-projektu/babylon">o projektu</Link></li>
       <li><Link to="/kontakt">kontakt</Link></li>
     </ul>
   );
@@ -36,7 +36,7 @@ export default class App extends Component {
       <div>
         <DocumentMeta />
         <header id="top" className="top">
-          <Grid>
+          <Container>
             <Row>
               <Col xs={3}>
                 <h1>
@@ -49,7 +49,7 @@ export default class App extends Component {
                 <Menu />
               </Col>
             </Row>
-          </Grid>
+          </Container>
         </header>
 
         <div className="appContent">
@@ -58,9 +58,9 @@ export default class App extends Component {
         </div>
 
         <footer className="bottom">
-          <Grid>
+          <Container>
             <Row>
-              <Col md={4} mdOffset={4} xs={12} className="sponsors">
+              <Col md={{ size: 4, offset: 4 }} xs={12} className="sponsors">
                 <a href="http://nadacevodafone.cz/">
                   <img src={nadaceVodafoneImg} alt="Nadace Vodafone" />
                 </a>
@@ -72,7 +72,7 @@ export default class App extends Component {
                 <Menu className="pull-right" />
               </Col>
             </Row>
-          </Grid>
+          </Container>
         </footer>
       </div>
     );

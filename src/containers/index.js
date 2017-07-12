@@ -9,24 +9,7 @@ export { default as Layout } from './Layout/Layout';
 
 // import SchoolFilter from './SchoolFilter/SchoolFilter';
 
-// import SchoolsList from './SchoolsList/SchoolsList';
-
-// import SchoolsListItem from './SchoolsListItem/SchoolsListItem';
+export { default as SchoolsList } from './SchoolsList/SchoolsList';
+export { default as SchoolsListItem } from './SchoolsListItem/SchoolsListItem';
 
 // import ViewDetailButton from './ViewDetailButton/ViewDetailButton';
-
-// export // ComparisonStatusBar,
-
-//   DevTools,
-
-// HomepageSearch,
-
-// MetaData,
-
-// SchoolFilter,
-
-// SchoolsList,
-
-// SchoolsListItem,
-
-// ViewDetailButton{};

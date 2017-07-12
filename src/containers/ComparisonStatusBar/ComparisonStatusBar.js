@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { UncontrolledTooltip } from 'reactstrap';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+
+import './ComparisonStatusBar.less';
 
 @connect(
   state => ({
@@ -9,7 +11,7 @@ import { push } from 'react-router-redux';
     schoolIds: state.comparison.schools.map(school => school._id).join(',')
   }),
   dispatch => ({
-    compare: ids => dispatch(push(null, `/comparison/${ids}`))
+    compare: ids => dispatch(push(`/comparison/${ids}`))
   })
 )
 export default class ComparisonStatusBar extends Component {
@@ -28,11 +30,11 @@ export default class ComparisonStatusBar extends Component {
 
   renderButton() {
     const { schoolsCount } = this.props;
-    const style = require('./ComparisonStatusBar.less');
-    const disabled = schoolsCount <= 1;
+    const buttonClassName = schoolsCount <= 1 ? 'empty' : 'ready';
     return (
       <button
-        className={disabled ? style.empty : style.ready}
+        id="comparison-status-bar-tooltip"
+        className={buttonClassName}
         onClick={this.goToComparison}
       >
         Porovnání {schoolsCount} škol
@@ -46,14 +48,16 @@ export default class ComparisonStatusBar extends Component {
       return this.renderButton();
     }
 
-    const tooltip = (
-      <Tooltip id={'tooltip'}>Přidejte alespoň dvě školy k porovnání.</Tooltip>
-    );
-
     return (
-      <OverlayTrigger placement="top" overlay={tooltip}>
+      <div>
         {this.renderButton()}
-      </OverlayTrigger>
+        <UncontrolledTooltip
+          target="comparison-status-bar-tooltip"
+          placement="top"
+        >
+          Přidejte alespoň dvě školy k porovnání.
+        </UncontrolledTooltip>
+      </div>
     );
   }
 }

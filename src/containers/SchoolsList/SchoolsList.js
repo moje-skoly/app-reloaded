@@ -1,17 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { SchoolsListItem } from '../';
 import { connect } from 'react-redux';
+import './SchoolsList.less';
 
-@connect(
-  state => ({
-    error: !!state.filter.error,
-    loading: !!state.filter.loading,
-    loaded: !!state.filter.loaded,
-    schools: state.filter.schools
-  })
-)
+@connect(state => ({
+  error: !!state.filter.error,
+  loading: !!state.filter.loading,
+  loaded: !!state.filter.loaded,
+  schools: state.filter.schools
+}))
 export default class SchoolsList extends Component {
-
   static propTypes = {
     error: PropTypes.bool,
     loading: PropTypes.bool,
@@ -21,29 +19,29 @@ export default class SchoolsList extends Component {
   };
 
   renderError() {
-    return <p className="alert alert-warning">Nastala chyba při komunikaci se úložištěm dat o školách.</p>;
+    return (
+      <p className="alert alert-warning">
+        Nastala chyba při komunikaci se úložištěm dat o školách.
+      </p>
+    );
   }
 
   renderLoading() {
-    return (
-      <div>Probíhá načítání dat...</div>
-    );
+    return <div>Probíhá načítání dat...</div>;
   }
 
   renderList() {
     const { schools, select } = this.props;
-    const styles = require('./SchoolsList.less');
     return (
       <div className={styles.schoolsList}>
-        {schools.map(school =>
+        {schools.map(school => (
           <SchoolsListItem key={school._id} school={school} select={select} />
-        )}
+        ))}
 
-        {schools.length === 0 && (
+        {schools.length === 0 &&
           <p className={'alert alert-warning'}>
             V databázi nejsou žádné školy odpovídající Vašim požadavkům.
-          </p>
-        )}
+          </p>}
       </div>
     );
   }
@@ -63,5 +61,4 @@ export default class SchoolsList extends Component {
 
     return null; // do not render anything until the data is ready
   }
-
 }
