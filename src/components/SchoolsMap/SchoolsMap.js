@@ -1,34 +1,32 @@
 import React, { Component, PropTypes } from 'react';
-import styles from './SchoolsMap.less';
+import './SchoolsMap.less';
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
-
-const hasPositon = school => (
-  school.metadata.address !== undefined
-    && school.metadata.address.location !== undefined
-    && school.metadata.address.location.lat !== undefined
-    && school.metadata.address.location.lon !== undefined
-);
+const hasPositon = school =>
+  school.metadata.address !== undefined &&
+  school.metadata.address.location !== undefined &&
+  school.metadata.address.location.lat !== undefined &&
+  school.metadata.address.location.lon !== undefined;
 
 export default class SchoolsMap extends Component {
-
   static propTypes = {
     schools: PropTypes.array.isRequired,
     center: PropTypes.object,
     centerTitle: PropTypes.string,
     select: PropTypes.func,
     allowZoom: PropTypes.bool
-  }
+  };
 
   /**
    * @param  {latLng}
    * @return {{ lat: Number, lon: Number }}
    */
-  latLng = (position) => {
+  latLng = position => {
     return {
       lat: Number(position.lat),
       lon: Number(position.lon)
     };
-  }
+  };
 
   render() {
     const {
@@ -46,8 +44,6 @@ export default class SchoolsMap extends Component {
 
     // remove schools without giv en location (damaged data)
     const filteredSchools = schools.filter(hasPositon);
-
-    const { Map, TileLayer, Marker, Popup } = require('react-leaflet');
     const onClick = school => () => {
       if (!!select) {
         select(school);
@@ -55,7 +51,9 @@ export default class SchoolsMap extends Component {
     };
 
     // default position is the center of Prague and a bit unzoomed
-    const mapCenter = center !== null ? center : { lat: 50.0803197, lon: 14.4155353 };
+    const mapCenter = center !== null
+      ? center
+      : { lat: 50.0803197, lon: 14.4155353 };
     const zoom = filteredSchools.length > 0 ? 12 : 10;
     const icon = window.L.icon({
       iconUrl: require('../../theme/images/marker-icon.png'),
@@ -67,36 +65,40 @@ export default class SchoolsMap extends Component {
 
     return (
       <Map
-        className={styles.map}
+        className="map"
         center={this.latLng(mapCenter)}
         zoom={zoom}
         maxZoom={allowZoom || true ? 16 : zoom}
         minZoom={allowZoom || true ? 5 : zoom}
-        >
+      >
         <TileLayer
           url={'http://{s}.tile.osm.org/{z}/{x}/{y}.png'}
-          attribution={'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}
-          />
-        {filteredSchools.map((school, index) => (
-          !!school.metadata.address.location &&
-          (<Marker
-            position={this.latLng(school.metadata.address.location)}
-            key={index}
-            onClick={onClick(school)}>
-            {!!school.metadata.name &&
-              (<Popup>
-                <strong>{school.metadata.name}</strong>
-            </Popup>)}
-          </Marker>)
-        ))}
-
-        {!!centerTitle && !!mapCenter && (
-          <Marker position={this.latLng(mapCenter)} icon={icon} key={-1}>
-              <Popup>
-                <strong>{centerTitle}</strong>
-              </Popup>
-          </Marker>
+          attribution={
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          }
+        />
+        {filteredSchools.map(
+          (school, index) =>
+            !!school.metadata.address.location &&
+            <Marker
+              position={this.latLng(school.metadata.address.location)}
+              key={index}
+              onClick={onClick(school)}
+            >
+              {!!school.metadata.name &&
+                <Popup>
+                  <strong>{school.metadata.name}</strong>
+                </Popup>}
+            </Marker>
         )}
+
+        {!!centerTitle &&
+          !!mapCenter &&
+          <Marker position={this.latLng(mapCenter)} icon={icon} key={-1}>
+            <Popup>
+              <strong>{centerTitle}</strong>
+            </Popup>
+          </Marker>}
       </Map>
     );
   }

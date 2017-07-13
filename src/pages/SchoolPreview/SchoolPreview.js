@@ -1,19 +1,18 @@
-import React, {Component, PropTypes} from 'react';
-import MetaData from '../../containers/MetaData/MetaData';
-import ComparisonButton from '../../components/ComparisonButton/ComparisonButton';
+import React, { Component, PropTypes } from 'react';
+import { MetaData, ViewDetailButton } from '../../containers';
+import { ComparisonButton } from '../../components';
 import { connect } from 'react-redux';
-import ViewDetailButton from '../../containers/ViewDetailButton/ViewDetailButton';
+import './SchoolPreview.less';
 
-@connect(
-  (state, props) => ({
-    loading: !!state.filter.loading,
-    loaded: !!state.filter.loaded,
-    error: !!state.filter.error,
-    school: state.filter.schools.find(school => school._id === props.params.previewId)
-  })
-)
+@connect((state, props) => ({
+  loading: !!state.filter.loading,
+  loaded: !!state.filter.loaded,
+  error: !!state.filter.error,
+  school: state.filter.schools.find(
+    school => school._id === props.params.previewId
+  )
+}))
 export default class SchoolPreview extends Component {
-
   static propTypes = {
     loading: PropTypes.bool,
     loaded: PropTypes.bool,
@@ -24,38 +23,37 @@ export default class SchoolPreview extends Component {
     }).isRequired
   };
 
-  viewDetail = (event) => {
+  viewDetail = event => {
     event.preventDefault();
     const { school, viewDetail } = this.props;
     viewDetail(school);
-  }
+  };
 
   renderLoading() {
-    return (
-      <p>Načítám data...</p>
-    );
+    return <p>Načítám data...</p>;
   }
 
   renderError() {
     return (
-      <p className={'alert alert-warning'}>Informace o škole nejsou k dispozici.</p>
+      <p className={'alert alert-warning'}>
+        Informace o škole nejsou k dispozici.
+      </p>
     );
   }
 
   renderPreview() {
     const { school } = this.props;
-    const styles = require('./SchoolPreview.less');
     return (
-      <div className={styles.preview}>
-        <div className={styles.header}>
-          <span className={'pull-right'}>
-            <ComparisonButton school={school} className={styles.green} />
+      <div className="preview">
+        <div className="header">
+          <span className="pull-right">
+            <ComparisonButton school={school} className="green" />
           </span>
         </div>
-        <div className={styles.body}>
+        <div className="body">
           <MetaData data={school.metadata} />
         </div>
-        <div className={styles.footer}>
+        <div className="footer">
           <ViewDetailButton school={school} />
         </div>
       </div>
@@ -79,5 +77,4 @@ export default class SchoolPreview extends Component {
 
     return null;
   }
-
 }

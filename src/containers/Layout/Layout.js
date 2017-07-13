@@ -17,10 +17,8 @@ const Menu = props => {
   );
 };
 
-@connect(state => ({ comparisonCount: state.comparison.schools.length }))
 export default class App extends Component {
   static propTypes = {
-    comparisonCount: PropTypes.number.isRequired,
     children: PropTypes.object.isRequired
   };
 
@@ -54,7 +52,7 @@ export default class App extends Component {
 
         <div className="appContent">
           {this.props.children}
-          <ComparisonStatusBar schoolsCount={this.props.comparisonCount} />
+          <ComparisonStatusBar />
         </div>
 
         <footer className="bottom">

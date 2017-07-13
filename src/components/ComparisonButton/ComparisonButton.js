@@ -1,10 +1,17 @@
-import React, {PropTypes, Component} from 'react';
-import {add as addToComparison, remove as removeFromComparison} from '../../redux/modules/comparison';
-import {connect} from 'react-redux';
+import React, { PropTypes, Component } from 'react';
+import {
+  add as addToComparison,
+  remove as removeFromComparison
+} from '../../redux/modules/comparison';
+import { connect } from 'react-redux';
+
+import './ComparisonButton.less';
 
 @connect(
   (state, props) => ({
-    isIncluded: state.comparison.schools.find(school => school._id === props.school._id) !== undefined
+    isIncluded: state.comparison.schools.find(
+      school => school._id === props.school._id
+    ) !== undefined
   }),
   (dispatch, props) => ({
     add: () => dispatch(addToComparison(props.school)),
@@ -12,7 +19,6 @@ import {connect} from 'react-redux';
   })
 )
 export default class ComparisonButton extends Component {
-
   static propTypes = {
     school: PropTypes.object.isRequired,
     isIncluded: PropTypes.bool,
@@ -33,13 +39,9 @@ export default class ComparisonButton extends Component {
 
   render() {
     const { isIncluded } = this.props;
-    const styles = require('./ComparisonButton.less');
     const text = isIncluded ? 'Odebrat z porovnávání' : 'Přidat k porovnání';
-    const btnStyle = isIncluded ? styles.removeFromComparison : styles.addToComparison;
+    const btnStyle = isIncluded ? 'removeFromComparison' : 'addToComparison';
 
-    return (
-      <button onClick={this.toggle} className={btnStyle}>{text}</button>
-    );
+    return <button onClick={this.toggle} className={btnStyle}>{text}</button>;
   }
-
 }

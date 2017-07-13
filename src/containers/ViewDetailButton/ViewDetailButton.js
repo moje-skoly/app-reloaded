@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { set } from '../../redux/modules/detail';
 import { push } from 'react-router-redux';
 import './ViewDetailButton.less';
 
 @connect(null, (dispatch, props) => ({
-  viewDetail: school =>
-    dispatch(set(school)) && dispatch(push(`/detail/${school._id}`))
+  viewDetail: school => dispatch(push(`/detail/${school._id}`))
 }))
 export default class ViewDetail extends Component {
   static propTypes = {

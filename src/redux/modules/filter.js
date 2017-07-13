@@ -1,4 +1,3 @@
-import { ajax } from 'rxjs/observable/dom/ajax';
 import { Observable } from 'rxjs';
 
 const SEARCH = 'moje-skoly/filter/SEARCH';
@@ -42,21 +41,15 @@ export default (state = initialState, action = {}) => {
   }
 };
 
-const filterEpic = action$ =>
+const filterEpic = (action$, store, { apiClient }) =>
   action$
     .ofType(SEARCH)
     .mergeMap(action =>
-      ajax
-        .getJSON(
-          `/v1/search/${encodeURIComponent(action.payload.address)}/${encodeURIComponent(action.payload.schoolType)}`
-        )
-        .map(response => searchFailed(response))
+      apiClient
+        .search(action.payload.address, action.payload.schoolType)
+        .map(response => searchCompleted(response))
         .catch(error => Observable.of(searchFailed(error)))
     );
-
-const isLoaded = globalState => {
-  return globalState.filter && globalState.filter.loaded;
-};
 
 const search = (address, schoolType) => {
   return {
@@ -83,4 +76,4 @@ const searchFailed = err => {
   };
 };
 
-export { filterEpic, isLoaded, search, searchCompleted, searchFailed };
+export { filterEpic, search, searchCompleted, searchFailed };

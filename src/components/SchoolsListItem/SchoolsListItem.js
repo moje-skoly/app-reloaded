@@ -1,16 +1,11 @@
-import React, { Component, PropTypes } from 'react';
-import { Row, Col } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
+import { Row, Col } from 'reactstrap';
 
 import './SchoolsListItem.less';
 
-@connect((state, props) => ({
-  previewedSchoolId: state.router.params.previewId,
-  isSelected: props.school._id === state.router.params.previewId
-}))
 export default class SchoolsListItem extends Component {
   static propTypes = {
-    previewedSchoolId: PropTypes.string,
     school: PropTypes.object.isRequired,
     isSelected: PropTypes.bool.isRequired,
     select: PropTypes.func.isRequired
@@ -27,7 +22,8 @@ export default class SchoolsListItem extends Component {
     }
 
     const { street, city, postalCode } = school.metadata.address;
-    return `${street}, ${postalCode} ${city}`;
+    let address = [street, city, postalCode].filter(s => Boolean(s));
+    return address.join(', ');
   };
 
   getDistance = distance => {
@@ -49,7 +45,7 @@ export default class SchoolsListItem extends Component {
       : [];
     return (
       <button
-        className={isSelected ? styles.selectedItem : styles.unselectedItem}
+        className={isSelected ? 'selectedItem' : 'unselectedItem'}
         onClick={this.onClick}
       >
         <Row>
@@ -63,14 +59,14 @@ export default class SchoolsListItem extends Component {
           </Col>
         </Row>
         <Row>
-          <Col xs={1}><i className={'fa fa-map-marker'} /></Col>
+          <Col xs={1}><i className="fa fa-map-marker" /></Col>
           <Col xs={11}>{this.getAddressString(school)}</Col>
         </Row>
         {contact !== null &&
           'websites' in contact &&
           contact.websites.length >= 1 &&
           <Row>
-            <Col xs={1}><i className={'fa fa-link'} /></Col>
+            <Col xs={1}><i className="fa fa-link" /></Col>
             <Col xs={11}>
               {websites.map(web => (
                 <a

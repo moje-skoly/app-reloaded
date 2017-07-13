@@ -1,26 +1,42 @@
-import React, { Component, PropTypes } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
+import { Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
+import Sticky from 'react-stickynode';
 
 import { search } from '../../redux/modules/filter';
 import {
   select as selectPreview,
   unselect as unselectPreview
 } from '../../redux/modules/preview';
-// import Sticky from 'react-sticky-position';
 
-import SchoolFilter from '../../containers/SchoolFilter/SchoolFilter';
-import SchoolsList from '../../containers/SchoolsList/SchoolsList';
-import SchoolsMap from '../../components/SchoolsMap/SchoolsMap';
-import SuggestedAddresses
-  from '../../containers/SuggestedAddresses/SuggestedAddresses';
+import {
+  SchoolFilter,
+  SchoolsList,
+  SuggestedAddresses
+} from '../../containers';
+import { SchoolsMap } from '../../components';
+
 import './Filter.less';
+
+const FilterWrapper = ({ children }) => (
+  <div className="homepage">
+    <Container>
+      <Row>
+        {children}
+      </Row>
+    </Container>
+  </div>
+);
 
 @connect(
   (state, props) => ({
     schools: state.filter.schools,
     addresses: state.filter.addresses || [],
-    center: state.filter.center
+    center: state.filter.center,
+    loaded: state.filter.loaded,
+    loading: state.filter.loading,
+    error: state.filter.error
   }),
   dispatch => ({
     select: selectPreview(dispatch),
@@ -34,37 +50,84 @@ export default class Filter extends Component {
     children: PropTypes.object,
     schools: PropTypes.array.isRequired,
     addresses: PropTypes.array,
-    previewedSchoolId: PropTypes.string,
 
     select: PropTypes.func.isRequired,
     unselect: PropTypes.func.isRequired,
 
     params: PropTypes.shape({
       address: PropTypes.string.isRequired,
-      schoolType: PropTypes.string.isRequired
+      schoolType: PropTypes.string.isRequired,
+      previewId: PropTypes.string
     }).isRequired
   };
 
   componentWillMount = () => {
+    this.runSearch();
+  };
+
+  componentDidUpdate(prevProps) {
+    const { params } = prevProps;
+    if (
+      params.address !== this.props.params.address ||
+      params.schoolType !== this.props.params.schoolType
+    ) {
+      this.runSearch();
+    }
+  }
+
+  runSearch = () => {
     const { params: { address, schoolType } } = this.props;
     this.props.filter(address, schoolType);
   };
 
   selectSchool = school => {
-    const { previewedSchoolId, select, unselect, params } = this.props;
-    const { address, schoolType } = params;
-    if (school._id === previewedSchoolId) {
+    const { select, unselect, params } = this.props;
+    const { address, schoolType, previewId } = params;
+    if (school._id === previewId) {
       unselect(school, address, schoolType);
     } else {
       select(school, address, schoolType);
     }
   };
 
+  renderError() {
+    return (
+      <FilterWrapper>
+        <Col>Nastala chyba při vyhledávání.</Col>
+      </FilterWrapper>
+    );
+  }
+
+  renderLoading() {
+    return (
+      <FilterWrapper>
+        <Col>Probíhá vyhledávání nejbližších škol...</Col>
+      </FilterWrapper>
+    );
+  }
+
   render() {
-    const { schools, children, center, params, addresses } = this.props;
-    const { address, schoolType } = params;
+    const {
+      schools,
+      children,
+      center,
+      params,
+      addresses,
+      loaded,
+      loading,
+      error
+    } = this.props;
+
+    if (error) {
+      return this.renderError();
+    } else if (!loaded || loading) {
+      return this.renderLoading();
+    }
+
+    const { schoolType, previewId } = params;
     const filteredAddresses = addresses.filter((addr, index) => index !== 0);
-    //const address = addresses[0];
+    const address = addresses[0];
+
     const unitsOnMap = schools.map(school => {
       const unitOfType = school.units.find(
         unit => unit.unitType === schoolType
@@ -79,7 +142,7 @@ export default class Filter extends Component {
 
     return (
       <div className="homepage">
-        <Grid>
+        <Container>
           <Row>
             <Col sm={6}>
               <h1 className="underlinedTitle">{'Nejbližší školy'}</h1>
@@ -90,7 +153,11 @@ export default class Filter extends Component {
                 addresses={filteredAddresses}
                 type={schoolType}
               />
-              <SchoolsList schools={schools} select={this.selectSchool} />
+              <SchoolsList
+                schools={schools}
+                select={this.selectSchool}
+                previewId={previewId}
+              />
             </Col>
             <Col sm={6}>
               <div className="map">
@@ -101,12 +168,14 @@ export default class Filter extends Component {
                   centerTitle={address}
                 />
               </div>
-              {/*<Sticky computeWidth style={{ top: 20 }}>
-                {children}
-              </Sticky>*/}
+              <Sticky top={20}>
+                <div>
+                  {children}
+                </div>
+              </Sticky>
             </Col>
           </Row>
-        </Grid>
+        </Container>
       </div>
     );
   }

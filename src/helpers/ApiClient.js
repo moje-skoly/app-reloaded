@@ -1,49 +1,39 @@
-import superagent from 'superagent';
+import { ajax } from 'rxjs/observable/dom/ajax';
 import config from '../config';
-
-const methods = ['get', 'post', 'put', 'patch', 'del'];
 
 function formatUrl(path) {
   const adjustedPath = path[0] !== '/' ? '/' + path : path;
-  // Prepend host and port of the API server to the path.
-  return 'http://' + config.apiHost + adjustedPath;
+  return 'http://' + config.apiHost + '/' + config.apiVersion + adjustedPath;
 }
 
-/*
- * This silly underscore is here to avoid a mysterious "ReferenceError: ApiClient is not defined" error.
- * See Issue #14. https://github.com/erikras/react-redux-universal-hot-example/issues/14
- *
- * Remove it at your own risk.
- */
-class _ApiClient {
-  constructor(req) {
-    methods.forEach((method) =>
-      this[method] = (path, { params, data } = {}) => new Promise((resolve, reject) => {
-        const request = superagent[method](formatUrl(path));
+function sanitize(param) {
+  return encodeURIComponent(param);
+}
 
-        if (params) {
-          request.query(params);
-        }
+function get(url) {
+  return ajax.getJSON(formatUrl(url));
+}
 
-        if (__SERVER__ && req.get('cookie')) {
-          request.set('cookie', req.get('cookie'));
-        }
+function post(url, body) {
+  console.log(body);
+  return ajax.post(formatUrl(url), body, {
+    'Content-Type': 'application/json'
+  });
+}
 
-        if (data) {
-          request.send(data);
-        }
+class ApiClient {
+  search(address, schoolType) {
+    return get(`/search/${sanitize(address)}/${sanitize(schoolType)}`);
+  }
 
-        request.end((err, { body } = {}) => {
-          if (err) {
-            return reject(body || err);
-          }
+  getSchool(id) {
+    return get(`/school/${id}`);
+  }
 
-          return resolve(body);
-        });
-      }));
+  getSchools(ids) {
+    console.log(ids);
+    return post('/school', { ids });
   }
 }
-
-const ApiClient = _ApiClient;
 
 export default ApiClient;

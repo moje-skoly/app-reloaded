@@ -1,5 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { Alert, Modal, ListGroup, ListGroupItem } from 'react-bootstrap';
+import {
+  Alert,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ListGroup,
+  ListGroupItem
+} from 'reactstrap';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 
@@ -24,12 +31,16 @@ export default class SuggestedAdresses extends Component {
     shown: false
   };
 
-  show = () => {
-    this.setState({ shown: true });
+  hide = () => {
+    this.setState({
+      shown: false
+    });
   };
 
-  hide = () => {
-    this.setState({ shown: false });
+  toggle = () => {
+    this.setState({
+      shown: !this.state.shown
+    });
   };
 
   search = address => {
@@ -61,28 +72,26 @@ export default class SuggestedAdresses extends Component {
 
     return (
       <div>
-        <Alert bsStyle={'info'}>
-          <p>
-            Mysleli jste
-            {' '}
-            <a onClick={() => this.search(firstAddr)} href={'#'}>{firstAddr}</a>
-            {addresses.length > 1 &&
-              <span>
-                {' nebo '}
-                <a href={'#'} onClick={this.show}>
-                  {addresses.length - 1}
-                  {' '}
-                  {this.echoSimilar(addresses.length - 1)}
-                </a>
-              </span>}
-            {'?'}
-          </p>
+        <Alert color={'info'}>
+          Mysleli jste
+          {' '}
+          <a onClick={() => this.search(firstAddr)} href={'#'}>{firstAddr}</a>
+          {addresses.length > 1 &&
+            <span>
+              {' nebo '}
+              <a href={'#'} onClick={this.toggle}>
+                {addresses.length - 1}
+                {' '}
+                {this.echoSimilar(addresses.length - 1)}
+              </a>
+            </span>}
+          {'?'}
         </Alert>
-        <Modal show={this.state.shown} onHide={this.hide}>
-          <Modal.Header closeButton>
-            <Modal.Title>Navrhované adresy</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        <Modal isOpen={this.state.shown} toggle={this.toggle}>
+          <ModalHeader toggle={this.toggle}>
+            Navrhované adresy
+          </ModalHeader>
+          <ModalBody>
             <ListGroup>
               {addresses.map((address, index) => (
                 <ListGroupItem key={index} onClick={() => this.search(address)}>
@@ -90,7 +99,7 @@ export default class SuggestedAdresses extends Component {
                 </ListGroupItem>
               ))}
             </ListGroup>
-          </Modal.Body>
+          </ModalBody>
         </Modal>
       </div>
     );

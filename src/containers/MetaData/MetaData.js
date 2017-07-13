@@ -1,29 +1,27 @@
 import React, { Component, PropTypes } from 'react';
-import styles from './MetaData.less';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'reactstrap';
+import './MetaData.less';
 
 export default class MetaData extends Component {
   static propTypes = {
     comparison: PropTypes.object,
     data: PropTypes.object.isRequired,
     isTitle: PropTypes.bool
-  }
+  };
 
   match = (first, second) => {
     return JSON.stringify(first) === JSON.stringify(second);
   };
 
-  renderAddress = (address) => (
-    <div className={styles.address}>
+  renderAddress = address => (
+    <div className="address">
       <Row>
-        <Col xs={2} className={styles.icon}>
+        <Col xs={2} className="icon">
           <i className={'fa fa-map-marker'} />
         </Col>
         <Col xs={10}>
           <p>
-            {!!address.street && (
-              <span>{address.street} <br /></span>
-            )}
+            {!!address.street && <span>{address.street} <br /></span>}
             {address.city}<br />
             {address.postalCode}
           </p>
@@ -38,50 +36,55 @@ export default class MetaData extends Component {
     }
 
     return (
-      <div className={styles.contact}>
-        {websites && websites.length >= 1
-          && (
-            <Row>
-              <Col xs={2} className={styles.icon}>
-                <i className={'fa fa-link'} />
-              </Col>
-              <Col xs={10}>
-                {websites.map(web => <a href={(!web.startsWith('http') ? 'http://' : '') + web} key={web} target={'_blank'}>{web}</a>)}
-              </Col>
-            </Row>
-          )}
-        {phoneNumbers && (
+      <div className="contact">
+        {websites &&
+          websites.length >= 1 &&
           <Row>
-            <Col xs={2} className={styles.icon}>
+            <Col xs={2} className="icon">
+              <i className={'fa fa-link'} />
+            </Col>
+            <Col xs={10}>
+              {websites.map(web => (
+                <a
+                  href={(!web.startsWith('http') ? 'http://' : '') + web}
+                  key={web}
+                  target={'_blank'}
+                >
+                  {web}
+                </a>
+              ))}
+            </Col>
+          </Row>}
+        {phoneNumbers &&
+          <Row>
+            <Col xs={2} className="icon">
               <i className={'fa fa-phone'} />
             </Col>
             <Col xs={10}>
               <p>{phoneNumbers.join(', ')}</p>
             </Col>
-          </Row>
-        )}
-        {emails && (
+          </Row>}
+        {emails &&
           <Row>
-            <Col xs={2} className={styles.icon}>
+            <Col xs={2} className="icon">
               <i className={'fa fa-envelope-o'} />
             </Col>
             <Col xs={10}>
               <p>{emails.join(', ')}</p>
             </Col>
-          </Row>
-        )}
+          </Row>}
       </div>
     );
   };
 
   renderOther = (headmaster, founder) => {
     return (
-      <div className={styles.other}>
+      <div className="other">
         <Row>
           <Col xs={12}>
             <table>
               <tbody>
-                {headmaster && (
+                {headmaster &&
                   <tr>
                     <td>
                       Ředitel:
@@ -89,9 +92,8 @@ export default class MetaData extends Component {
                     <td>
                       {headmaster}
                     </td>
-                  </tr>
-                )}
-                {founder && (
+                  </tr>}
+                {founder &&
                   <tr>
                     <td>
                       Zřizovatel:
@@ -99,8 +101,7 @@ export default class MetaData extends Component {
                     <td>
                       {founder}
                     </td>
-                  </tr>
-                )}
+                  </tr>}
               </tbody>
             </table>
           </Col>
@@ -114,21 +115,27 @@ export default class MetaData extends Component {
     const { name, address, contact, headmaster, founder } = data;
 
     return (
-      <div className={styles.metaInfo}>
-        {(!comparison || comparison.name !== name)
-          && <h2 className={isTitle === true ? styles.title : styles.heading}>{name}</h2>}
+      <div className="metaInfo">
+        {(!comparison || comparison.name !== name) &&
+          <h2 className={isTitle === true ? 'title' : 'heading'}>
+            {name}
+          </h2>}
 
-        {address
-          && (!comparison || this.match(comparison.address, address) === false)
-          && this.renderAddress(address)}
+        {address &&
+          (!comparison || this.match(comparison.address, address) === false) &&
+          this.renderAddress(address)}
 
-        {contact
-          && (!comparison || this.match(comparison.contact, contact) === false)
-          && this.renderContact(contact.websites, contact.phoneNumbers, contact.emails)}
+        {contact &&
+          (!comparison || this.match(comparison.contact, contact) === false) &&
+          this.renderContact(
+            contact.websites,
+            contact.phoneNumbers,
+            contact.emails
+          )}
 
-        {(headmaster || founder)
-          && !comparison
-          && this.renderOther(headmaster.name, founder)}
+        {(headmaster || founder) &&
+          !comparison &&
+          this.renderOther(headmaster.name, founder)}
       </div>
     );
   }

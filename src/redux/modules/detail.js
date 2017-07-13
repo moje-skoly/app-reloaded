@@ -1,7 +1,9 @@
-const SET = 'nase-skoly/detail/SET';
-const LOAD = 'nase-skoly/detail/LOAD';
-const LOAD_SUCCESS = 'nase-skoly/detail/LOAD_SUCCESS';
-const LOAD_FAIL = 'nase-skoly/detail/LOAD_FAIL';
+import { Observable } from 'rxjs';
+
+const SET = 'moje-skoly/detail/SET';
+const LOAD = 'moje-skoly/detail/LOAD';
+const LOAD_SUCCESS = 'moje-skoly/detail/LOAD_SUCCESS';
+const LOAD_FAILED = 'moje-skoly/detail/LOAD_FAIL';
 
 const initialState = {
   error: false,
@@ -11,49 +13,71 @@ const initialState = {
 
 export default function detail(state = initialState, action = {}) {
   switch (action.type) {
-  case SET:
-    return {
-      error: false,
-      loaded: true,
-      school: action.school
-    };
+    case SET:
+      return {
+        error: false,
+        loaded: true,
+        school: action.school
+      };
 
-  case LOAD:
-    return {
-      loaded: false,
-      loading: true,
-      school: null
-    };
+    case LOAD:
+      return {
+        loaded: false,
+        loading: true,
+        school: null
+      };
 
-  case LOAD_SUCCESS:
-    return {
-      error: false,
-      loaded: true,
-      school: action.result.school
-    };
+    case LOAD_SUCCESS:
+      return {
+        error: false,
+        loaded: true,
+        school: action.payload.school
+      };
 
-  case LOAD_FAIL:
-    return {
-      error: true,
-      loaded: false,
-      school: null
-    };
+    case LOAD_FAILED:
+      return {
+        error: true,
+        loaded: false,
+        school: null
+      };
 
-  default:
-    return state;
+    default:
+      return state;
   }
 }
 
-export function set(school) {
-  return {
-    type: SET,
-    school
-  };
-}
+const detailEpic = (action$, store, { apiClient }) =>
+  action$
+    .ofType(LOAD)
+    .mergeMap(action =>
+      apiClient
+        .getSchool(action.payload.id)
+        .map(response => loadCompleted(response))
+        .catch(error => Observable.of(loadFailed(error)))
+    );
 
-export function load(id) {
+const loadSchool = id => {
   return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get(`/v1/school/${id}`)
+    type: LOAD,
+    payload: {
+      id
+    }
   };
-}
+};
+
+const loadCompleted = payload => {
+  return {
+    type: LOAD_SUCCESS,
+    payload
+  };
+};
+
+const loadFailed = err => {
+  return {
+    type: LOAD_FAILED,
+    payload: err,
+    error: true
+  };
+};
+
+export { loadSchool, detailEpic };

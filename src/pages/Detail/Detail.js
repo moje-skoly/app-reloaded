@@ -1,9 +1,9 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import SchoolDetail from '../../components/SchoolDetail/SchoolDetail';
 import { connect } from 'react-redux';
-import { load as loadDetail } from '../../redux/modules/detail';
-import { Grid, Row, Col } from 'react-bootstrap';
-import styles from './Detail.less';
+import { loadSchool } from '../../redux/modules/detail';
+import { Container, Row, Col, Alert } from 'reactstrap';
+import './Detail.less';
 
 @connect(
   state => ({
@@ -13,11 +13,10 @@ import styles from './Detail.less';
     school: state.detail.school
   }),
   (dispatch, props) => ({
-    load: () => dispatch(loadDetail(props.params.schoolId))
+    load: () => dispatch(loadSchool(props.params.schoolId))
   })
 )
 export default class Detail extends Component {
-
   static propTypes = {
     error: PropTypes.bool,
     loaded: PropTypes.bool,
@@ -29,16 +28,13 @@ export default class Detail extends Component {
 
   componentDidMount() {
     const { error, loaded, loading, load } = this.props;
-    if (error === false
-      && loaded === false
-      && loading === false) {
-
+    if (error === false && loaded === false && loading === false) {
       load();
     }
   }
 
   renderError() {
-    return <p className="alert alert-warning">Detaily školy není možné zobrazit.</p>;
+    return <Alert color="warning">Detaily školy není možné zobrazit.</Alert>;
   }
 
   renderLoading() {
@@ -51,9 +47,7 @@ export default class Detail extends Component {
 
   renderDetail() {
     const { school } = this.props;
-    return (
-      <SchoolDetail school={school} />
-    );
+    return <SchoolDetail school={school} />;
   }
 
   render() {
@@ -69,14 +63,14 @@ export default class Detail extends Component {
     }
 
     return (
-      <div className={styles.detailPage}>
-        <Grid>
+      <div className="detailPage">
+        <Container>
           <Row>
-            <Col md={8} mdOffset={2} sm={10} smOffset={1}>
+            <Col md={{ size: 8, offset: 2 }} sm={{ size: 10, offset: 1 }}>
               {data}
             </Col>
           </Row>
-        </Grid>
+        </Container>
       </div>
     );
   }

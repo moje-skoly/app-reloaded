@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import { SchoolsListItem } from '../';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
+import { SchoolsListItem } from '../../components';
 import { connect } from 'react-redux';
 import './SchoolsList.less';
 
@@ -11,6 +12,7 @@ import './SchoolsList.less';
 }))
 export default class SchoolsList extends Component {
   static propTypes = {
+    previewId: PropTypes.string,
     error: PropTypes.bool,
     loading: PropTypes.bool,
     loaded: PropTypes.bool,
@@ -31,11 +33,17 @@ export default class SchoolsList extends Component {
   }
 
   renderList() {
-    const { schools, select } = this.props;
+    const { schools, select, previewId } = this.props;
+
     return (
-      <div className={styles.schoolsList}>
+      <div className="schoolsList">
         {schools.map(school => (
-          <SchoolsListItem key={school._id} school={school} select={select} />
+          <SchoolsListItem
+            key={school._id}
+            school={school}
+            select={select}
+            isSelected={previewId === school._id}
+          />
         ))}
 
         {schools.length === 0 &&

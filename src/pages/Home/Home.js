@@ -1,8 +1,7 @@
 import React from 'react';
 
-import BetaAlert from '../../components/BetaAlert/BetaAlert';
-import HomepageSearch from '../../containers/HomepageSearch/HomepageSearch';
-import HowItWorks from '../../components/HowItWorks/HowItWorks';
+import { HomepageSearch } from '../../containers';
+import { HowItWorks } from '../../components';
 import styles from './Home.less';
 
 const Home = () => (

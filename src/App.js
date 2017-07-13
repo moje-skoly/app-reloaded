@@ -10,8 +10,8 @@ import {
   About,
   Home,
   How,
-  // Detail,
-  // Comparison,
+  Detail,
+  Comparison,
   Contact,
   Filter,
   NotFound,
@@ -33,13 +33,13 @@ export default class App extends Component {
               <Route path="preview/:previewId" component={SchoolPreview} />
             </Route>
 
-            {/* Detail of a school * /}
-              <Route path="detail/:schoolId" component={Detail} />
+            {/* Detail of a school */}
+            <Route path="detail/:schoolId" component={Detail} />
 
-              {/* Comparison of multiple schools * /}
-              <Route path="comparison/:schoolIds" component={Comparison} />
+            {/* Comparison of multiple schools */}
+            <Route path="comparison/:schoolIds" component={Comparison} />
 
-              {/* Static pages */}
+            {/* Static pages */}
             <Route path="o-projektu/:projekt" component={About} />
             <Route path="manifest" component={How} />
             <Route path="kontakt" component={Contact} />
