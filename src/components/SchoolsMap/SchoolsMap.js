@@ -34,7 +34,8 @@ export default class SchoolsMap extends Component {
       center = null,
       centerTitle = 'Vyhledaná adresa',
       select,
-      allowZoom = true
+      allowZoom = true,
+      scrollWheelZoom
     } = this.props;
 
     // leaflet does not support server-side rendering
@@ -70,6 +71,7 @@ export default class SchoolsMap extends Component {
         zoom={zoom}
         maxZoom={allowZoom || true ? 16 : zoom}
         minZoom={allowZoom || true ? 5 : zoom}
+        scrollWheelZoom={scrollWheelZoom}
       >
         <TileLayer
           url={'http://{s}.tile.osm.org/{z}/{x}/{y}.png'}
@@ -103,3 +105,6 @@ export default class SchoolsMap extends Component {
     );
   }
 }
+SchoolsMap.defaultProps = {
+  scrollWheelZoom: true
+};

@@ -15,7 +15,6 @@ function get(url) {
 }
 
 function post(url, body) {
-  console.log(body);
   return ajax.post(formatUrl(url), body, {
     'Content-Type': 'application/json'
   });
@@ -31,7 +30,6 @@ class ApiClient {
   }
 
   getSchools(ids) {
-    console.log(ids);
     return post('/school', { ids });
   }
 }

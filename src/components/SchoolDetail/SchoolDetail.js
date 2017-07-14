@@ -65,6 +65,7 @@ const SchoolDetail = ({ school }) => {
               center={school.metadata.address.location}
               ceterTitle={school.metadata.name}
               allowZoom
+              scrollWheelZoom={false}
             />
           </div>
           <div className="units">

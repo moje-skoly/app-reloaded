@@ -13,7 +13,6 @@ const initialState = {
 };
 
 export default function comparison(state = initialState, action = {}) {
-  console.log(action);
   switch (action.type) {
     case ADD:
       if (

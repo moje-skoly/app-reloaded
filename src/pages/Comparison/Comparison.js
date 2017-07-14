@@ -243,14 +243,14 @@ export default class Comparison extends Component {
           </tr>
           <tr>
             {schools.map((school, index) => (
-              <td className="relative" key={index}>
-                <div className="allowScroll" />
+              <td key={index}>
                 {school.metadata.address.location &&
                   <SchoolsMap
                     schools={[school]}
                     center={school.metadata.address.location}
                     allowZoom={false}
                     centerTitle={school.metadata.name}
+                    scrollWheelZoom={false}
                   />}
               </td>
             ))}
@@ -385,11 +385,11 @@ export default class Comparison extends Component {
     const { focusedSchool, showArrows } = this.state;
 
     return (
-      <div className="comparisonPage" ref={'page'}>
+      <div className="comparisonPage" ref="page">
         <Container>
           <Row>
             <Col xs={12}>
-              <h2 className="title">Srovnání škol</h2>
+              <h2 className="title comparisonTitle">Srovnání škol</h2>
             </Col>
           </Row>
           {showArrows &&
